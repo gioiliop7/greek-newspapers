@@ -10,22 +10,23 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Domain Path: /languages
 Text Domain: greek-newspapers
 */
-// Define the function to generate the HTML for each newspaper
 require_once(plugin_dir_path(__FILE__) . 'includes/helpers.php');
-function greek_newspapers_add_plugin_actions( $links ) {
-    $settings_link = '<a href="' . esc_url( get_admin_url( null, 'options-general.php?page=greek_newspapers_settings' ) ) . '">Settings</a>';
-    array_unshift( $links, $settings_link);
+function greek_newspapers_add_plugin_actions($links)
+{
+    $settings_link = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=greek_newspapers_settings')) . '">Settings</a>';
+    array_unshift($links, $settings_link);
     return $links;
 }
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'greek_newspapers_add_plugin_actions' );
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'greek_newspapers_add_plugin_actions');
+require_once(plugin_dir_path(__FILE__) . 'includes/setup.php');
 function greek_newspapers_shortcode()
 {
-    wp_enqueue_style('greek-newspapers-style', plugins_url('/greek-newspapers.css', __FILE__));
     require_once(plugin_dir_path(__FILE__) . 'includes/fetch.php');
     $groups = $data->widgetGroups;
     $selectedCategories = [];
     // Get options for plugin
     $options = get_option('greek_newspapers_options');
+    $viewMode = $options['view_mode'];
     foreach ($options as $key => $option) {
         if ($option == true) {
             array_push($selectedCategories, $key);
@@ -39,16 +40,36 @@ function greek_newspapers_shortcode()
         if (in_array($name, $selectedCategories) && count($newspapers) > 0) {
             $html .= '<h3>' . category_title($name) . '</h3>';
             $html .= '<hr/>';
-            $html .= '<div class="greek-newspapers-flexbox">';
+            // Check the selected view mode and generate the HTML accordingly
+            if ($viewMode === 'flexbox' || count($newspapers) < 3) {
+                $html .= '<div class="greek-newspapers-flexbox">';
 
-            // Loop through the newspapers and generate the HTML for each one
-            foreach ($newspapers as $newspaper) {
-                $newspaperID = $newspaper->id;
-                $newspaperTitle = $newspaper->title;
-                $imgUrl = $newspaper->imgUrl;
-                $html .= generate_newspaper_html($newspaperID, $newspaperTitle, $imgUrl);
+                // Loop through the newspapers and generate the HTML for each one
+                foreach ($newspapers as $newspaper) {
+                    $newspaperID = $newspaper->id;
+                    $newspaperTitle = $newspaper->title;
+                    $imgUrl = $newspaper->imgUrl;
+                    $html .= generate_newspaper_html($newspaperID, $newspaperTitle, $imgUrl);
+                }
+
+                $html .= '</div>';
+            } else if ($viewMode === 'slider') {
+                $html .= '<div id="'.$name.'" class="greek-newspapers-slider splide">';
+                $html .= '<div class="splide__track">';
+                $html .= '<ul class="splide__list">';
+
+                // Loop through the newspapers and generate the HTML for each one
+                foreach ($newspapers as $newspaper) {
+                    $newspaperID = $newspaper->id;
+                    $newspaperTitle = $newspaper->title;
+                    $imgUrl = $newspaper->imgUrl;
+                    $html .= generate_newspaper_slides($newspaperID, $newspaperTitle, $imgUrl);
+                }
+
+                $html .= '</ul>';
+                $html .= '</div>';
+                $html .= '</div>';
             }
-            $html .= '</div>';
         }
     }
     $html .= '</div>';
@@ -56,4 +77,3 @@ function greek_newspapers_shortcode()
 }
 add_shortcode('greek_newspapers', 'greek_newspapers_shortcode');
 require_once(plugin_dir_path(__FILE__) . 'includes/settings-form.php');
-?>

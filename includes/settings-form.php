@@ -12,6 +12,7 @@ function greek_newspapers_settings_menu()
 }
 add_action('admin_menu', 'greek_newspapers_settings_menu');
 
+
 // Display settings page for plugin
 function greek_newspapers_settings_page()
 {
@@ -36,6 +37,7 @@ function greek_newspapers_settings_page()
             'athlitika_periodika' => false,
             'free_press' => false,
             'miniaia_periodika' => false,
+            'view_mode' => 'flexbox'
         );
     }
 
@@ -51,8 +53,10 @@ function greek_newspapers_settings_page()
         $options['athlitika_periodika'] = isset($_POST['athlitika_periodika']);
         $options['free_press'] = isset($_POST['free_press']);
         $options['miniaia_periodika'] = isset($_POST['miniaia_periodika']);
+        $options['view_mode'] = $_POST['view-mode'];
         update_option('greek_newspapers_options', $options);
     }
+    $viewMode = $options['view_mode'];
 ?>
 
     <div class="wrap">
@@ -60,6 +64,12 @@ function greek_newspapers_settings_page()
         <p><?php echo esc_html__('To display the newspapers on your website, you can use the following shortcode:', 'greek-newspapers'); ?> <code>[greek_newspapers]</code></p>
         <p><?php echo esc_html__('Make sure to include the shortcode in a post or page where you want the newspapers to appear.', 'greek-newspapers'); ?></p>
         <form method="post">
+            <h2>View mode</h2>
+            <select name="view-mode" id="view-mode">
+                <option value="flexbox" <?php if ($viewMode === 'flexbox') echo 'selected'; ?>>Flexbox</option>
+                <option value="slider" <?php if ($viewMode === 'slider') echo 'selected'; ?>>Slider</option>
+            </select>
+            <h2>Categories to display</h2>
             <table class="form-table">
                 <tbody>
                     <tr>

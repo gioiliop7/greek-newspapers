@@ -28,3 +28,7 @@
 .greek-newspapers a:focus{
   background:none!important;
 }
+
+.splide__slide{
+  padding:1rem;
+}

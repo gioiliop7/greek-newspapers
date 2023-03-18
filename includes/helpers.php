@@ -1,16 +1,28 @@
 <?php
 function generate_newspaper_html($id, $title, $imgUrl)
 {
-    $imgUrl = 'https://protoselida.24media.gr/'.$imgUrl;
+    $imgUrl = 'https://protoselida.24media.gr/' . $imgUrl;
     $html = '<div class="newspaper-item">';
-    $html .= '<p>'.$title.'</p>';
-    $html .= '<a href="'.$imgUrl.'" target="_blank"><img id="'.$id.'" src="' . $imgUrl . '" alt="' . $title . '"/></a>';
+    $html .= '<p>' . $title . '</p>';
+    $html .= '<a href="' . $imgUrl . '" target="_blank"><img id="' . $id . '" src="' . $imgUrl . '" alt="' . $title . '"/></a>';
     $html .= '</div>';
 
     return $html;
 }
 
-function category_title($name){
+function generate_newspaper_slides($id, $title, $imgUrl)
+{
+    $imgUrl = 'https://protoselida.24media.gr/' . $imgUrl;
+    $html = '<li class="newspaper-item splide__slide">';
+    $html .= '<a href="' . $imgUrl . '" target="_blank"><img id="' . $id . '" src="' . $imgUrl . '" alt="' . $title . '"/></a>';
+    $html .= '</li>';
+
+    return $html;
+}
+
+
+function category_title($name)
+{
     switch ($name) {
         case 'politikes':
             $name = 'Πολιτικές';
