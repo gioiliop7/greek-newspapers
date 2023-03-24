@@ -21,7 +21,7 @@ function generate_newspaper_slides($id, $title, $imgUrl)
 }
 
 
-function category_title($name)
+function greek_newspapers_category_title($name)
 {
     switch ($name) {
         case 'politikes':

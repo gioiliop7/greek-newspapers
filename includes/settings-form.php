@@ -43,17 +43,32 @@ function greek_newspapers_settings_page()
 
     // If form is submitted, save options
     if (isset($_POST['submit'])) {
-        $options['politikes'] = isset($_POST['politikes']);
-        $options['oikonomikes'] = isset($_POST['oikonomikes']);
-        $options['kuriakatikes'] = isset($_POST['kuriakatikes']);
-        $options['athlitikes'] = isset($_POST['athlitikes']);
-        $options['evdomadiaies'] = isset($_POST['evdomadiaies']);
-        $options['perifereia'] = isset($_POST['perifereia']);
-        $options['evdomadiaia_periodika'] = isset($_POST['evdomadiaia_periodika']);
-        $options['athlitika_periodika'] = isset($_POST['athlitika_periodika']);
-        $options['free_press'] = isset($_POST['free_press']);
-        $options['miniaia_periodika'] = isset($_POST['miniaia_periodika']);
-        $options['view_mode'] = $_POST['view-mode'];
+        $options = array();
+
+        // Sanitize checkbox options
+        $options['politikes'] = isset($_POST['politikes']) ? 1 : 0;
+        $options['oikonomikes'] = isset($_POST['oikonomikes']) ? 1 : 0;
+        $options['kuriakatikes'] = isset($_POST['kuriakatikes']) ? 1 : 0;
+        $options['athlitikes'] = isset($_POST['athlitikes']) ? 1 : 0;
+        $options['evdomadiaies'] = isset($_POST['evdomadiaies']) ? 1 : 0;
+        $options['perifereia'] = isset($_POST['perifereia']) ? 1 : 0;
+        $options['evdomadiaia_periodika'] = isset($_POST['evdomadiaia_periodika']) ? 1 : 0;
+        $options['athlitika_periodika'] = isset($_POST['athlitika_periodika']) ? 1 : 0;
+        $options['free_press'] = isset($_POST['free_press']) ? 1 : 0;
+        $options['miniaia_periodika'] = isset($_POST['miniaia_periodika']) ? 1 : 0;
+
+        // Validate and sanitize view mode option
+        if (isset($_POST['view-mode'])) {
+            $view_mode = sanitize_text_field($_POST['view-mode']);
+            if (in_array($view_mode, array('flexbox', 'slider'))) {
+                $options['view_mode'] = $view_mode;
+            } else {
+                $options['view_mode'] = 'flexbox';
+            }
+        } else {
+            $options['view_mode'] = 'flexbox';
+        }
+
         update_option('greek_newspapers_options', $options);
     }
     $viewMode = $options['view_mode'];
