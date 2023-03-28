@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Greek Newspapers
-Version: 1.0
+Version: 1.0.1
 Author: Giorgos Iliopoulos
 Author URI: https://giorgos-iliopoulos.eu
 Description: Display Greek newspapers daily on your website
