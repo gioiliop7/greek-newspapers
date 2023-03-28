@@ -76,6 +76,7 @@ function greek_newspapers_settings_page()
 
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <p><i><?php echo esc_html__("Please note that the images displayed using our plugin are fetched from the third-party website https://www.news247.gr/ and are subject to the website's terms of service and any applicable agreements. We do not claim ownership of these images and have no affiliation with the website.");?></i></p>
         <p><?php echo esc_html__('To display the newspapers on your website, you can use the following shortcode:', 'greek-newspapers'); ?> <code>[greek_newspapers]</code></p>
         <p><?php echo esc_html__('Make sure to include the shortcode in a post or page where you want the newspapers to appear.', 'greek-newspapers'); ?></p>
         <form method="post">
